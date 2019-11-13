@@ -3,8 +3,7 @@ as well as its next node in the List."""
 
 
 class ListNode:
-    def __init__(self, key, value, prev=None, next=None):
-        self.key = key
+    def __init__(self, value, prev=None, next=None):
         self.value = value
         self.prev = prev
         self.next = next
@@ -36,11 +35,11 @@ class ListNode:
             self.next.prev = self.prev
 
 
-"""Our doubly-linked list class. It holds references to
-the list's head and tail nodes."""
-
-
 class DoublyLinkedList:
+    """Our doubly-linked list class. It holds references to
+    the list's head and tail nodes.
+    """
+
     def __init__(self, node=None):
         self.head = node
         self.tail = node
@@ -49,11 +48,11 @@ class DoublyLinkedList:
     def __len__(self):
         return self.length
 
-    def add_to_head(self, key, value):
+    def add_to_head(self, value):
         """Wraps the given value in a ListNode and inserts it
         as the new head of the list. Don't forget to handle
         the old head node's previous pointer accordingly."""
-        new = ListNode(key, value)
+        new = ListNode(value)
         if not self.head:
             self.head = new
             self.tail = new
@@ -69,7 +68,7 @@ class DoublyLinkedList:
         Returns the value of the removed Node."""
         if not self.head:
             return
-        val = self.head.key
+        val = self.head.value
         if self.head is self.tail:
             self.head, self.tail = None, None
             self.length = 0
@@ -80,11 +79,11 @@ class DoublyLinkedList:
         self.length -= 1
         return val
 
-    def add_to_tail(self, key, value):
+    def add_to_tail(self, value):
         """Wraps the given value in a ListNode and inserts it
         as the new tail of the list. Don't forget to handle
         the old tail node's next pointer accordingly."""
-        new = ListNode(key, value)
+        new = ListNode(value)
         if not self.tail:
             self.head = new
             self.tail = new
@@ -135,24 +134,24 @@ class DoublyLinkedList:
     def move_to_end(self, node):
         """Removes the input node from its current spot in the
         List and inserts it as the new tail node of the List."""
-        val = node.key
+        val = node.value
         if self.head is node:
             self.head = self.head.next
             self.head.prev = None
         node.delete()
         self.length -= 1
-        self.add_to_tail(node.key, node.value)
+        self.add_to_tail(val)
 
     def delete(self, node):
         """Removes a node from the list and handles cases where
         the node was the head or the tail"""
-        if self.head and self.head.key == node.key:
+        if self.head and self.head.value == node.value:
             if self.head.next:
                 self.head = self.head.next
                 self.head.prev = None
             else:
                 self.head = None
-        if self.tail and self.tail.key == node.key:
+        if self.tail and self.tail.value == node.value:
             if self.tail.prev:
                 self.tail = self.tail.prev
                 self.tail.next = None

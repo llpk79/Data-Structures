@@ -17,7 +17,7 @@ class LRUCache:
         self.limit = limit
 
     def add(self, node):
-        self.queue.add_to_tail(node.key, node.value)
+        self.queue.add_to_tail(node.value)
 
     def remove(self, node):
         self.queue.delete(node)
@@ -37,7 +37,7 @@ class LRUCache:
         self.remove(node)
         self.add(node)
 
-        return node.value
+        return node.value[1]
 
     def set(self, key, value):
         """
@@ -53,7 +53,7 @@ class LRUCache:
         if key in self.memo:
             self.remove(self.memo[key])
 
-        node = ListNode(key, value)
+        node = ListNode((key, value))
 
         self.memo[key] = node
         self.remove(node)
@@ -61,6 +61,6 @@ class LRUCache:
         self.queue.length += 1
 
         if self.queue.length > self.limit:
-            key_ = self.queue.remove_from_head()
-            self.memo.pop(key_, None)
+            value_ = self.queue.remove_from_head()
+            self.memo.pop(value_[0], None)
             self.queue.length -= 1

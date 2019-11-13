@@ -16,12 +16,6 @@ class LRUCache:
         self.memo = dict()
         self.limit = limit
 
-    def add(self, node):
-        self.queue.add_to_tail(node.value)
-
-    def remove(self, node):
-        self.queue.delete(node)
-
     def get(self, key):
         """
         Retrieves the value associated with the given key. Also
@@ -34,8 +28,7 @@ class LRUCache:
             return None
 
         node = self.memo[key]
-        self.remove(node)
-        self.add(node)
+        self.queue.move_to_end(node)
 
         return node.value[1]
 
@@ -51,13 +44,15 @@ class LRUCache:
         the newly-specified value.
         """
         if key in self.memo:
-            self.remove(self.memo[key])
+            node = self.memo[key]
+            node.value = (key, value)
+            self.queue.move_to_end(node)
+            return
 
         node = ListNode((key, value))
 
         self.memo[key] = node
-        self.remove(node)
-        self.add(node)
+        self.queue.move_to_end(node)
         self.queue.length += 1
 
         if self.queue.length > self.limit:

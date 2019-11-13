@@ -1,6 +1,6 @@
 import sys
-sys.path.append('../queue_and_stack/')
-from dll_queue import Queue
+sys.path.append('../doubly_linked_list/')
+from doubly_linked_list import DoublyLinkedList, ListNode
 
 
 class LRUCache:
@@ -12,18 +12,15 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        self.queue = Queue()
-        self.limit = limit
-        self.size = 0
+        self.queue = DoublyLinkedList()
         self.memo = dict()
+        self.limit = limit
 
-    def move_up(self, key):
-        curr = self.queue.head
-        while curr.next:
-            if curr.value == key:
-                break
-            curr = curr.next
-        self.queue.move_to_end(curr)
+    def add(self, node):
+        self.queue.add_to_tail(node.key, node.value)
+
+    def remove(self, node):
+        self.queue.delete(node)
 
     def get(self, key):
         """
@@ -33,10 +30,14 @@ class LRUCache:
         Returns the value associated with the key or None if the
         key-value pair doesn't exist in the cache.
         """
-        if not self.queue or key not in self.memo:
+        if key not in self.memo:
             return None
-        self.move_up(key)
-        return self.memo[key]
+
+        node = self.memo[key]
+        self.remove(node)
+        self.add(node)
+
+        return node.value
 
     def set(self, key, value):
         """
@@ -50,12 +51,16 @@ class LRUCache:
         the newly-specified value.
         """
         if key in self.memo:
-            self.memo[key] = value
-        else:
-            self.memo[key] = value
-            self.queue.enqueue(key)
-            self.size += 1
-            if self.size > self.limit:
-                val = self.queue.dequeue()
-                self.memo.pop(val, None)
-                self.size -= 1
+            self.remove(self.memo[key])
+
+        node = ListNode(key, value)
+
+        self.memo[key] = node
+        self.remove(node)
+        self.add(node)
+        self.queue.length += 1
+
+        if self.queue.length > self.limit:
+            key_ = self.queue.remove_from_head()
+            self.memo.pop(key_, None)
+            self.queue.length -= 1

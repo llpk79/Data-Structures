@@ -1,8 +1,8 @@
 import sys
 sys.path.append('../queue_and_stack')
-# from dll_queue import Queue
-# from dll_stack import Stack
-from collections import deque
+from dll_queue import Queue
+from dll_stack import Stack
+
 
 class BinarySearchTree:
     def __init__(self, value):
@@ -79,34 +79,32 @@ class BinarySearchTree:
     def bft_print(self, node):
         # Print the value of every node, starting with the given node,
         # in an iterative breadth first traversal
-        q = deque()
-        q.append(node)
+        q = Queue()
+        q.enqueue(node)
         ans = ''
         while q:
-            curr = q.popleft()
+            curr = q.dequeue()
             if not curr:
                 continue
             ans += str(curr.value) + '\n'
-            q.append(curr.left)
-            q.append(curr.right)
+            q.enqueue(curr.left)
+            q.enqueue(curr.right)
         print(ans[:-1])
-        return ans[:-1]
 
     def dft_print(self, node):
         # Print the value of every node, starting with the given node,
         # in an iterative depth first traversal
-        stack = [node]
+        stack = Stack()
+        stack.push(node)
         ans = ''
         while stack:
             curr = stack.pop()
             if not curr:
                 continue
             ans += str(curr.value) + '\n'
-            stack.append(curr.left)
-            stack.append(curr.right)
+            stack.push(curr.left)
+            stack.push(curr.right)
         print(ans[:-1])
-        return ans[:-1]
-
 
     # STRETCH Goals -------------------------
     # Note: Research may be required

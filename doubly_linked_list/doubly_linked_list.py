@@ -52,7 +52,10 @@ class DoublyLinkedList:
         """Wraps the given value in a ListNode and inserts it
         as the new head of the list. Don't forget to handle
         the old head node's previous pointer accordingly."""
-        new = ListNode(value)
+        if isinstance(value, ListNode):
+            new = value
+        else:
+            new = ListNode(value)
         if not self.head:
             self.head = new
             self.tail = new
@@ -83,7 +86,10 @@ class DoublyLinkedList:
         """Wraps the given value in a ListNode and inserts it
         as the new tail of the list. Don't forget to handle
         the old tail node's next pointer accordingly."""
-        new = ListNode(value)
+        if isinstance(value, ListNode):
+            new = value
+        else:
+            new = ListNode(value)
         if not self.tail:
             self.head = new
             self.tail = new
@@ -123,24 +129,22 @@ class DoublyLinkedList:
     def move_to_front(self, node):
         """Removes the input node from its current spot in the
         List and inserts it as the new head node of the List."""
-        val = node.value
         if self.tail is node:
             self.tail = self.tail.prev
             self.tail.next = None
         node.delete()
         self.length -= 1
-        self.add_to_head(val)
+        self.add_to_head(node)
 
     def move_to_end(self, node):
         """Removes the input node from its current spot in the
         List and inserts it as the new tail node of the List."""
-        val = node.value
         if self.head is node:
             self.head = self.head.next
             self.head.prev = None
         node.delete()
         self.length -= 1
-        self.add_to_tail(val)
+        self.add_to_tail(node)
 
     def delete(self, node):
         """Removes a node from the list and handles cases where

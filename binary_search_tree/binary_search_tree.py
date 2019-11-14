@@ -11,7 +11,7 @@ class BinarySearchTree:
         self.right = None
 
     def insert(self, value):
-        # Insert the given value into the tree
+        """Insert the given value into the tree"""
         if value == self.value:
             return f"Value already in tree"
         if value > self.value:
@@ -26,8 +26,8 @@ class BinarySearchTree:
                 self.left = BinarySearchTree(value)
 
     def contains(self, target):
-        # Return True if the tree contains the value
-        # False if it does not
+        """Return True if the tree contains the value
+        False if it does not"""
         if not self:
             return False
         if self.value == target:
@@ -42,24 +42,18 @@ class BinarySearchTree:
             else: return False
 
     def get_max(self):
-        return self._get_max(self, 0)
+        """Return the maximum value found in the tree"""
+        if self.right:
+            return self.right.get_max()
 
-    def _get_max(self, node, max_):
-        # Return the maximum value found in the tree
-        if node.left:
-            max_ = self._get_max(node.left, max_)
-        if node.right:
-            max_ = self._get_max(node.right, max_)
-        if node and node.value > max_:
-            max_ = node.value
-        return max_
+        return self.value
 
     def for_each(self, cb):
-        # Call the function `cb` on the value of each node
-        # You may use a recursive or iterative approach
+        """Call the function `cb` on the value of each node
+        You may use a recursive or iterative approach"""
         if not self:
             return
-        self.value = cb(self.value)
+        cb(self.value)
         if self.left:
             self.left.for_each(cb)
         if self.right:
@@ -68,8 +62,8 @@ class BinarySearchTree:
     # DAY 2 Project -----------------------
 
     def in_order_print(self, node):
-        # Print all the values in order from low to high
-        # Hint:  Use a recursive, depth first traversal
+        """Print all the values in order from low to high
+        Hint:  Use a recursive, depth first traversal"""
         if not node:
             return
         self.in_order_print(node.left)
@@ -77,8 +71,8 @@ class BinarySearchTree:
         self.in_order_print(node.right)
 
     def bft_print(self, node):
-        # Print the value of every node, starting with the given node,
-        # in an iterative breadth first traversal
+        """Print the value of every node, starting with the given node,
+        in an iterative breadth first traversal"""
         q = Queue()
         q.enqueue(node)
         ans = ''
@@ -92,8 +86,8 @@ class BinarySearchTree:
         print(ans[:-1])
 
     def dft_print(self, node):
-        # Print the value of every node, starting with the given node,
-        # in an iterative depth first traversal
+        """Print the value of every node, starting with the given node,
+        in an iterative depth first traversal"""
         stack = Stack()
         stack.push(node)
         ans = ''
@@ -102,15 +96,15 @@ class BinarySearchTree:
             if not curr:
                 continue
             ans += str(curr.value) + '\n'
-            stack.push(curr.left)
             stack.push(curr.right)
+            stack.push(curr.left)
         print(ans[:-1])
 
     # STRETCH Goals -------------------------
     # Note: Research may be required
 
     def pre_order_dft(self, node):
-        # Print In-order recursive DFT
+        """Print In-order recursive DFT"""
         if not node:
             return
         print(node.value)
@@ -118,7 +112,7 @@ class BinarySearchTree:
         self.pre_order_dft(node.right)
 
     def post_order_dft(self, node):
-        # Print Post-order recursive DFT
+        """Print Post-order recursive DFT"""
         if not node:
             return
         self.post_order_dft(node.left)
